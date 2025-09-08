@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 export default async function Blogs(){
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs`)
