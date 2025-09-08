@@ -20,10 +20,12 @@ export const authOptions = {
         
         const users =db.collection("users");
         const user = await users.findOne({ email: credentials.email,password:credentials.password});
-        console.log(user)
         if (user) {
-          
-          return Promise.resolve(user);
+          return Promise.resolve({
+            id: user._id.toString(),
+            email: user.email,
+            name: user.name || "User",
+  });
         } else {
           
           return Promise.resolve(null);
