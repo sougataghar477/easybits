@@ -21,7 +21,6 @@ export const authOptions = {
           return Promise.resolve({
             id: user._id.toString(),
             email: user.email,
-            name: user.name || "User",
   });
         } else {
           

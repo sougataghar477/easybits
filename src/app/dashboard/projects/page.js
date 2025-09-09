@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 export default function DashboardProjects() {
   const [projects, setProjects] = useState([]);
+  const cardsRef = useRef([]);
 
   // Fetch projects on mount
   useEffect(() => {
@@ -17,18 +20,23 @@ export default function DashboardProjects() {
         console.error("Failed to fetch projects:", err);
       }
     };
-
     fetchProjects();
   }, []);
+
+useGSAP(() => {
+cardsRef?.current?.forEach((el,i) =>
+  gsap.fromTo(el,{ opacity: 0, x: 50 }, // starting state
+    { opacity: 1, x: 0, duration: 0.8, delay: 0.2*i, ease: "power3.out" })
+)
+}, [projects]);
+
 
   // Delete handler
   const handleDeletion = async (id) => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects/delete`, {
         method: "DELETE", 
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
       });
 
@@ -45,10 +53,14 @@ export default function DashboardProjects() {
   return (
     <>
       <h1 className="font-bold text-4xl">Projects</h1>
+      <Link href={'/dashboard/projects/new'}>
+        <button className="px-4 py-2 bg-green-700 text-white rounded-lg my-4">Create New Project</button>
+      </Link>
       <div className="grid md:grid-cols-2 gap-4 items-stretch">
-        {projects.map((p) => (
+        {projects.map((p, i) => (
           <div
             key={p._id}
+            ref={(el) => (cardsRef.current[i] = el)}
             className="card-shadow p-4 rounded-4xl mt-4 h-full"
           >
             <p className="font-bold">{p.name}</p>

@@ -1,21 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-
+import { useSession } from "next-auth/react";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
-
+  const [themeMode,setThemeMode]=useState('');
+  const { data: session } = useSession(); 
+  useEffect(()=>{
+    setThemeMode(theme)
+  },[theme])
   const links = [
     { href: "/", label: "Home" },
-    { href: "/blogs", label: "Blog" },
+    { href: "/blogs", label: "Blogs" },
     { href: "/projects", label: "Projects" },
     { href: "/contact", label: "Contact" },
   ];
 
-  // toggle function using next-themes
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
@@ -33,7 +36,7 @@ export default function Navbar() {
           {links.map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={session && link.href === '/blogs' || session && link.href === '/projects' ?`/dashboard${link.href}`:link.href}
               className="text-gray-800 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400 transition"
             >
               {link.label}
@@ -45,7 +48,7 @@ export default function Navbar() {
             onClick={toggleTheme}
             className="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 transition"
           >
-            {theme === "light" ? "🌙" : "🔆"}
+            {themeMode === "light" ? "🌙" : "🔆"}
           </button>
         </div>
 
@@ -65,15 +68,15 @@ export default function Navbar() {
             {links.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
-                className="text-gray-800 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400 transition"
+                href={session && link.href === '/blogs' || session && link.href === '/projects' ?`/dashboard${link.href}`:link.href}
                 onClick={() => setMenuOpen(false)}
+                className="text-gray-800 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400 transition"
               >
                 {link.label}
               </Link>
             ))}
 
-            {/* Theme Toggle inside mobile menu */}
+            {/* Theme Toggle (mobile) */}
             <button
               onClick={() => {
                 toggleTheme();
@@ -81,7 +84,7 @@ export default function Navbar() {
               }}
               className="flex items-center gap-2 mt-2 px-4 py-2 rounded bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-700 transition"
             >
-              {theme === "light" ? "🌙 Dark Mode" : "🔆 Light Mode"}
+              {themeMode === "light" ? "🌙" : "🔆"}
             </button>
           </div>
         </div>

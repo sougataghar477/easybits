@@ -64,7 +64,6 @@ export default function Contact() {
         className="border w-full rounded-lg p-2 mt-2"
         placeholder="you@example.com"
         required
-        aria-label="Email"
       />
 
       <button
@@ -78,7 +77,6 @@ export default function Contact() {
       {message && (
         <p
           className={`mt-3 ${status === "success" ? "text-green-600" : "text-red-600"}`}
-        //   role={status === "error" ? "alert" : "status"}
         >
           {message}
         </p>
