@@ -19,6 +19,7 @@ export default function Navbar() {
     { href: "/blogs", label: "Blogs" },
     { href: "/projects", label: "Projects" },
     { href: "/contact", label: "Contact" },
+    { href: "/dashboard", label: "Dashboard" },
   ];
 
   const toggleTheme = () => {
@@ -39,7 +40,14 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={session && link.href === '/blogs' || session && link.href === '/projects' ?`/dashboard${link.href}`:link.href}
-              className={`${path.replace('/dashboard','')===link.href?'underline':''} underline-offset-6 decoration-2 text-gray-800 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400 transition`}
+              className={`${
+                (path === "/dashboard" && link.href === "/dashboard") ||
+                (path !== "/dashboard" &&
+                path.replace("/dashboard", "") === link.href)
+                ? "underline"
+                : ""
+                } underline-offset-6 decoration-2 text-white hover:text-pink-600 dark:hover:text-pink-400 transition`}
+
             >
               {link.label}
             </Link>
@@ -70,7 +78,13 @@ export default function Navbar() {
                 key={link.href}
                 href={session && link.href === '/blogs' || session && link.href === '/projects' ?`/dashboard${link.href}`:link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`${path.replace('/dashboard','')===link.href?'underline':''} underline-offset-6 decoration-2 text-gray-800 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400 transition`}
+                className={`${
+                (path === "/dashboard" && link.href === "/dashboard") ||
+                (path !== "/dashboard" &&
+                path.replace("/dashboard", "") === link.href)
+                ? "underline"
+                : ""
+                } underline-offset-6 decoration-2 text-white hover:text-pink-600 dark:hover:text-pink-400 transition`}
               >
                 {link.label}
               </Link>
