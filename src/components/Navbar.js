@@ -1,6 +1,6 @@
 "use client";
-
-import { useState,useEffect } from "react";
+import { useState,useEffect, use } from "react";
+import { usePathname } from 'next/navigation';
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useSession } from "next-auth/react";
@@ -8,7 +8,9 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const [themeMode,setThemeMode]=useState('');
-  const { data: session } = useSession(); 
+  const { data: session } = useSession();
+  const path =  usePathname();
+  console.log(path.replace('/dashboard','')) 
   useEffect(()=>{
     setThemeMode(theme)
   },[theme])
@@ -37,7 +39,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={session && link.href === '/blogs' || session && link.href === '/projects' ?`/dashboard${link.href}`:link.href}
-              className="text-gray-800 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400 transition"
+              className={`${path.replace('/dashboard','')===link.href?'underline':''} underline-offset-6 decoration-2 text-gray-800 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400 transition`}
             >
               {link.label}
             </Link>
@@ -60,8 +62,6 @@ export default function Navbar() {
           {menuOpen ? "✖" : "☰"}
         </button>
       </div>
-
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white dark:bg-gray-900 shadow-lg">
           <div className="flex flex-col space-y-4 p-4">
@@ -70,13 +70,11 @@ export default function Navbar() {
                 key={link.href}
                 href={session && link.href === '/blogs' || session && link.href === '/projects' ?`/dashboard${link.href}`:link.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-gray-800 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400 transition"
+                className={`${path.replace('/dashboard','')===link.href?'underline':''} underline-offset-6 decoration-2 text-gray-800 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400 transition`}
               >
                 {link.label}
               </Link>
             ))}
-
-            {/* Theme Toggle (mobile) */}
             <button
               onClick={() => {
                 toggleTheme();
