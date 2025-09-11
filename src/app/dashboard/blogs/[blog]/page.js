@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Blog() {
   const [blogDetails, setBlogDetails] = useState({
@@ -29,14 +30,12 @@ export default function Blog() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          alert("Blog updated successfully!");
-        } else {
-          alert(data.error || "Something went wrong");
-        }
+          toast.success("Blog updated successfully!");
+        } 
       })
       .catch((err) => {
         console.error("Update failed:", err);
-        alert("Failed to update blog");
+        toast.error("Failed to update blog");
       });
   };
 

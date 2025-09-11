@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function DashboardProject() {
   const [form, setForm] = useState({ name: "", description: "" });
@@ -9,7 +10,7 @@ export default function DashboardProject() {
   const { project } = useParams();
   const handleSubmit = async (e)=>{
     e.preventDefault();
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/editProject`, {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects/edit`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -21,18 +22,16 @@ export default function DashboardProject() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          alert("Project updated successfully!");
-        } else {
-          alert(data.error || "Something went wrong");
+          toast.success("Project updated successfully!");
         }
       })
       .catch((err) => {
         console.error("Update failed:", err);
-        alert("Failed to update project");
+        toast.error("Failed to update project");
       })
   }
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/getProjects/${project}`)
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects/${project}`)
       .then((r) => r.json())
       .then((d) => setForm(d))
       .catch(err => setForm({name: "", description: ""}))
