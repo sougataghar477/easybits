@@ -13,7 +13,7 @@ const handleSign = async (e) => {
 
   try {
     const result = await signIn("credentials", {
-      redirect: false,
+      redirect: '/dashboard',
       email,
       password,
     });
