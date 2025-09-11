@@ -8,21 +8,36 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSign = async (e) => {
-    e.preventDefault();
+const handleSign = async (e) => {
+  e.preventDefault();
 
+  try {
     const result = await signIn("credentials", {
       redirect: false,
       email,
       password,
     });
 
+    // Debugging (check what happens in production)
+    console.log("signIn result:", result);
+
     if (result?.error) {
-      alert("Invalid email or password");
-    } else {
-      router.push("/dashboard"); 
+      toast.error("Invalid email or password");
+      return;
     }
-  };
+
+    if (result?.ok && result?.url) {
+      // Session should now be set in cookies
+      router.push("/dashboard");
+    } else {
+      toast.error("Login failed. Please try again.");
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    toast.error("Something went wrong. Please try again later.");
+  }
+};
+
 
   return (
     <form className="mt-[25%] p-4" onSubmit={handleSign}>
