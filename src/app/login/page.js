@@ -28,7 +28,7 @@ const handleSign = async (e) => {
 
     if (result?.ok && result?.url) {
       // Session should now be set in cookies
-      router.push("/dashboard");
+      console.log('hello from login')
     } else {
       toast.error("Login failed. Please try again.");
     }
