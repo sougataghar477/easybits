@@ -1,10 +1,8 @@
 'use client';
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 export default function Login() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,8 +15,6 @@ const handleSign = async (e) => {
       email,
       password,
     });
-
-    // Debugging (check what happens in production)
     console.log("signIn result:", result);
 
     if (result?.error) {
@@ -27,7 +23,6 @@ const handleSign = async (e) => {
     }
 
     if (result?.ok && result?.url) {
-      // Session should now be set in cookies
       console.log('hello from login')
     } else {
       toast.error("Login failed. Please try again.");

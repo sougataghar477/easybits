@@ -2,8 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-export const dynamic = "force-dynamic"; // ✅ prevents build error
-
+export const dynamic = "force-dynamic";
 export default function Blog() {
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);

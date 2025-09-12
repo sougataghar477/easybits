@@ -9,7 +9,7 @@ export default function DashboardProjects() {
   const [projects, setProjects] = useState([]);
   const cardsRef = useRef([]);
 
-  // Fetch projects on mount
+  
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -31,7 +31,7 @@ cardsRef?.current?.forEach((el,i) =>
 }, [projects]);
 
 
-  // Delete handler
+   
   const handleDeletion = async (id) => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects/delete`, {

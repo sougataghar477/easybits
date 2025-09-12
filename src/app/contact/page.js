@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function Contact() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState(""); // "", "sending", "success", "error"
+  const [status, setStatus] = useState("");
   const [message, setMessage] = useState("");
 
   const isSending = status === "sending";

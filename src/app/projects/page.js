@@ -21,7 +21,7 @@ export default function Projects() {
 
 useGSAP(() => {
 cardsRef?.current?.forEach((el,i) =>
-  gsap.fromTo(el,{ opacity: 0, x: 50 }, // starting state
+  gsap.fromTo(el,{ opacity: 0, x: 50 }, 
     { opacity: 1, x: 0, duration: 0.8, delay: 0.2*i, ease: "power3.out" })
 )
 }, [projects]);
