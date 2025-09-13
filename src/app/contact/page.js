@@ -3,23 +3,25 @@
 import { useState } from "react";
 
 export default function Contact() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("");
-  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState(""); // store user email
+  const [status, setStatus] = useState(""); // track current status (idle, sending, success, error)
+  const [message, setMessage] = useState(""); // message to show user (feedback)
 
-  const isSending = status === "sending";
+  const isSending = status === "sending"; // helper to disable button when sending
 
   async function handleSubmit(e) {
     e.preventDefault();
     setStatus("");
     setMessage("");
 
+    // check if email is empty
     if (!email.trim()) {
       setStatus("error");
       setMessage("Please enter your email address.");
       return;
     }
 
+    // basic email validation pattern
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
       setStatus("error");
@@ -30,6 +32,7 @@ export default function Contact() {
     try {
       setStatus("sending");
 
+      // send email to backend API
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -38,10 +41,11 @@ export default function Contact() {
 
       const data = await res.json();
 
+      // if backend says success
       if (data.success !== false) {
         setStatus("success");
         setMessage(data.message);
-        setEmail("");
+        setEmail(""); // clear field
       } else {
         setStatus("error");
         setMessage(data.message);
@@ -56,6 +60,8 @@ export default function Contact() {
   return (
     <form onSubmit={handleSubmit} className="max-w-md">
       <p className="font-medium">Email:</p>
+
+      {/* input field for email */}
       <input
         type="email"
         name="email"
@@ -66,6 +72,7 @@ export default function Contact() {
         required
       />
 
+      {/* submit button */}
       <button
         className="block mt-4 rounded-lg cursor-pointer bg-green-700 px-4 py-2 text-white disabled:bg-green-400 disabled:cursor-auto"
         type="submit"
@@ -74,9 +81,12 @@ export default function Contact() {
         {isSending ? "Sending..." : "Receive Email"}
       </button>
 
+      {/* show message if exists */}
       {message && (
         <p
-          className={`mt-3 ${status === "success" ? "text-green-600" : "text-red-600"}`}
+          className={`mt-3 ${
+            status === "success" ? "text-green-600" : "text-red-600"
+          }`}
         >
           {message}
         </p>
